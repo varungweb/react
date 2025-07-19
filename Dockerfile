@@ -1,22 +1,22 @@
-# Use Node.js v20.18.3
-FROM node:20.18.3
+# --- Stage 1: Build React/Vite App ---
+FROM node:20.18.3-alpine AS builder
 
-# Set working directory
 WORKDIR /app
-
-# Copy everything to container
 COPY . .
 
-# Install dependencies
 RUN npm install
-
-# Build the app (production)
 RUN npm run build
 
-# Output build folder
-CMD ["ls", "-l", "dist"]
+# --- Stage 2: Serve with Nginx ---
+FROM nginx:stable-alpine AS production
 
-# docker build -t react-builder .
-# docker create --name temp-react-builder react-builder
-# docker cp temp-react-builder:/app/dist ./dist   # or use /app/build if using CRA
-# docker rm temp-react-builder
+# Remove default nginx static files
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy React build from previous stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

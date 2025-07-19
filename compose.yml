@@ -1,0 +1,10 @@
+services:
+  react-nginx:
+    image: ekart-frontend:latest
+    container_name: ekart-react
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped
