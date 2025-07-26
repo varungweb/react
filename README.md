@@ -4,6 +4,11 @@ This project shows how to deploy a frontend app (like React) to AWS using a priv
 
 Everything is automated using **Terraform** (for infra) and **Docker** (for building & uploading the app).
 
+
+---
+## Note: 
+
+Must update the Access Key and Secret Key in Secrets. also updat ethe cloudfront Distribution ID in secrets.
 ---
 
 ## 🔧 Stack Used
@@ -44,13 +49,7 @@ terraform init
 terraform apply
 ````
 
-4. **Run Docker to build & upload**
-
-```bash
-cd docker-build-upload
-docker build -t react-uploader .
-docker run --rm -e AWS credentials... react-uploader
-```
+4. **Run Docker to build/package & upload to S3**
 
 5. **Access your app** via the CloudFront URL from Terraform output
 
