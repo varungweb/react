@@ -66,6 +66,10 @@ docker run --rm -e AWS credentials... react-uploader
 
 ---
 
+## Architecture Diagram
+<img width="1057" height="664" alt="image" src="https://github.com/user-attachments/assets/1b858983-9c6d-474c-af1c-b599ad53bbe8" />
+
+---
 ## 📌 Notes
 
 * You can replace `simple-react` with any frontend build
