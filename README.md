@@ -67,7 +67,8 @@ docker run --rm -e AWS credentials... react-uploader
 ---
 
 ## Architecture Diagram
-<img width="1057" height="664" alt="image" src="https://github.com/user-attachments/assets/1b858983-9c6d-474c-af1c-b599ad53bbe8" />
+<img width="841" height="440" alt="s3" src="https://github.com/user-attachments/assets/2f03004a-e91f-40a4-b4d0-1997dc002840" />
+
 
 ---
 ## 📌 Notes
