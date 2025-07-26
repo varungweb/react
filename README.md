@@ -6,9 +6,7 @@ Everything is automated using **Terraform** (for infra) and **Docker** (for buil
 
 
 ---
-## Note: 
-
-Must update the Access Key and Secret Key in Secrets. also updat ethe cloudfront Distribution ID in secrets.
+#### Note: Must update the Access Key and Secret Key in Secrets. also updat ethe cloudfront Distribution ID in secrets.
 ---
 
 ## 🔧 Stack Used
