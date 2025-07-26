@@ -1,97 +1,73 @@
-**Step-by-step guide** to pre-validate ACM for `*.domain.com` before running Terraform, using your plan:
+# 🚀 Static Website Hosting with React + AWS (S3 + CloudFront) Using Terraform & Docker
+
+This project shows how to deploy a frontend app (like React) to AWS using a private S3 bucket and expose it via CloudFront for global low-latency access.
+
+Everything is automated using **Terraform** (for infra) and **Docker** (for building & uploading the app).
 
 ---
 
-### ✅ Goal:
+## 🔧 Stack Used
 
-To **pre-validate** an ACM certificate for `*.domain.com`, so that Terraform can **auto-validate** the certificate without waiting for DNS later.
-
----
-
-### 🔢 Steps Guide:
-
-#### **STEP 1: Manually create ACM certificate in `us-east-1`**
-
-1. Go to the [ACM Console – N. Virginia (us-east-1)](https://us-east-1.console.aws.amazon.com/acm)
-2. Click **"Request a certificate"**
-3. Choose **"Request a public certificate"**
-4. Enter domain: `*.domain.com` (wildcard)
-5. Choose **DNS validation**
-6. Complete and click **"Request"**
+- **React** (or any static frontend framework)
+- **Docker** – for consistent build + S3 upload
+- **AWS S3** – to store static site (with public access disabled)
+- **AWS CloudFront** – to serve site securely and quickly
+- **Terraform** – for deploying infra
 
 ---
 
-#### **STEP 2: Copy DNS CNAME records**
+## 🛠️ How It Works
 
-1. In the certificate details, find the **CNAME record(s)** under "Validation"
-2. Copy:
+### 1. 🐳 Build & Upload (Docker)
 
-   * **Record Name**
-   * **Record Type (CNAME)**
-   * **Record Value**
+- Docker builds the React app using `npm run build`
+- Uploads the static files to an S3 bucket (private)
 
----
+### 2. ☁️ Deploy Infra (Terraform)
 
-#### **STEP 3: Add CNAME record to your DNS**
+- Creates S3 bucket (private, no public access)
+- Creates a CloudFront distribution with S3 as the origin
+- Outputs the CloudFront URL to access the site
 
-* If using Route53:
-
-  * Go to **Route53 > Hosted Zones > domain.com**
-  * Click **"Create record"**
-  * Choose **CNAME**, paste name and value
-* If using another DNS provider (Cloudflare, GoDaddy, etc.):
-
-  * Add the CNAME record exactly as shown in ACM
-
-✅ **Wait a few minutes** — ACM will detect the validation and mark it **"Issued"**
 
 ---
 
-#### **STEP 4: Delete the validated certificate**
+## ✅ Steps to Use
 
-1. Go back to **ACM Console**
-2. Select the issued cert for `*.domain.com`
-3. Click **"Delete"**
-
-⚠️ **Do not delete the DNS record!** Keep the CNAME in your DNS — it’s reused!
-
----
-
-#### **STEP 5: Now run your Terraform code**
-#### **Note: Must setup the backend.tf first**
-* When you run:
+1. **Set your AWS credentials** locally  
+2. **Update Terraform variables** for region, bucket name, etc.
+3. **Run Terraform** to provision infra
 
 ```bash
-cd Terraform
+cd terraform
 terraform init
 terraform apply
+````
+
+4. **Run Docker to build & upload**
+
+```bash
+cd docker-build-upload
+docker build -t react-uploader .
+docker run --rm -e AWS credentials... react-uploader
 ```
 
-✅ The ACM cert will be **auto-validated** because ACM finds the DNS validation already present.
+5. **Access your app** via the CloudFront URL from Terraform output
 
 ---
 
-### 🧪 Verify:
+## 💡 Benefits of This Setup
 
-After `terraform apply`:
-
-* Check ACM console — cert should show **"Issued"**
-* No manual DNS steps required anymore
+* ✅ **Low-cost hosting** (S3 + CloudFront is cheap)
+* 🌍 **Global CDN delivery** (via CloudFront)
+* 🔒 **No public access to S3** (better security)
+* 📦 **Docker ensures clean builds**
+* 🧱 **Infra as Code with Terraform**
 
 ---
 
-Would you like me to generate the Terraform for **Route53 auto-validation** next time so this is fully automated?
+## 📌 Notes
 
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* You can replace `simple-react` with any frontend build
+* Works with any static site: React, Vue, HTML, etc.
+* CloudFront handles caching automatically
