@@ -3,5 +3,5 @@ variable "region" {
 }
 
 variable "domain_name" {
-  default = "mvision.in"
+  default = "varungupta.in"
 }
