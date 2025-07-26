@@ -4,9 +4,8 @@ This project shows how to deploy a frontend app (like React) to AWS using a priv
 
 Everything is automated using **Terraform** (for infra) and **Docker** (for building & uploading the app).
 
+Note: Must update the Access Key and Secret Key in Secrets. also updat ethe cloudfront Distribution ID in secrets.
 
----
-#### Note: Must update the Access Key and Secret Key in Secrets. also updat ethe cloudfront Distribution ID in secrets.
 ---
 
 ## 🔧 Stack Used
